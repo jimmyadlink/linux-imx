@@ -2490,6 +2490,31 @@ static const struct panel_desc innolux_zj070na_01p = {
 	},
 };
 
+static const struct drm_display_mode auo_g156hat026_mode = {
+	.clock = 141000,
+	.hdisplay = 1920,
+	.hsync_start = 1920 + 80,
+	.hsync_end = 1920 + 80 + 80,
+	.htotal = 1920 + 80 + 80 + 80,
+
+	.vdisplay = 1080,
+	.vsync_start = 1080 + 8,
+	.vsync_end = 1080 + 8 + 20,
+	.vtotal = 1080 + 8 + 20 + 8,
+};
+
+static const struct panel_desc auo_g156hat026 = {
+	.modes = &auo_g156hat026_mode,
+	.num_modes = 1,
+	.bpc = 8,
+	.size = {
+		.width = 344,
+		.height = 194,
+	},
+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+};
+
 static const struct display_timing jdi_tx26d202vm0bwa_timing = {
 	.pixelclock = { 151820000, 156720000, 159780000 },
 	.hactive = { 1920, 1920, 1920 },
@@ -4232,6 +4257,9 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "auo,g156xtn01",
 		.data = &auo_g156xtn01,
 	}, {
+		.compatible = "auo,g156hat026",
+		.data = &auo_g156hat026,
+	}, {
 		.compatible = "auo,g185han01",
 		.data = &auo_g185han01,
 	}, {
@@ -4681,6 +4709,34 @@ static const struct panel_desc_dsi auo_b080uan01 = {
 	.lanes = 4,
 };
 
+static const struct drm_display_mode auo_g080uan02_mode = {
+	.clock = 154500,
+	.hdisplay = 1200,
+	.hsync_start = 1200 + 1,
+	.hsync_end = 1200 + 139 + 1,
+	.htotal = 1200 + 139 + 1 + 1,
+	.vdisplay = 1920,
+	.vsync_start = 1920 + 1,
+	.vsync_end = 1920 + 59 + 1,
+	.vtotal = 1920 + 59 + 1 + 1,
+};
+
+static const struct panel_desc_dsi auo_g080uan02 = {
+	.desc = {
+		.modes = &auo_g080uan02_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.size = {
+			.width = 107,
+			.height = 172,
+		},
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_CLOCK_NON_CONTINUOUS,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
 static const struct drm_display_mode boe_tv080wum_nl0_mode = {
 	.clock = 160000,
 	.hdisplay = 1200,
@@ -4859,6 +4915,9 @@ static const struct of_device_id dsi_of_match[] = {
 	{
 		.compatible = "auo,b080uan01",
 		.data = &auo_b080uan01
+	}, {
+		.compatible = "auo,g080uan02",
+		.data = &auo_g080uan02
 	}, {
 		.compatible = "boe,tv080wum-nl0",
 		.data = &boe_tv080wum_nl0
