@@ -327,6 +327,14 @@ config SERIAL_MAX310X
 
 	  Say Y here if you want to support this ICs.
 
+config SERIAL_ADL1001
+	tristate "ADL1001 support"
+	depends on I2C
+	select SERIAL_CORE
+	select REGMAP_I2C if I2C
+	help
+	  ADL1001 chip support
+
 config SERIAL_DZ
 	bool "DECstation DZ serial driver"
 	depends on MACH_DECSTATION && 32BIT
