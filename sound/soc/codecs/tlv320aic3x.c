@@ -45,6 +45,7 @@
 #include <sound/soc.h>
 #include <sound/initval.h>
 #include <sound/tlv.h>
+#include <linux/clk.h>
 
 #include "tlv320aic3x.h"
 
@@ -88,6 +89,7 @@ struct aic3x_priv {
 	enum aic3x_micbias_voltage micbias_vg;
 	/* Output Common-Mode Voltage */
 	u8 ocmv;
+	struct clk *mclk;
 };
 
 static const struct reg_default aic3x_reg[] = {
@@ -1832,9 +1834,25 @@ int aic3x_probe(struct device *dev, struct regmap *regmap, kernel_ulong_t driver
 			dev_err(dev, "Failed to init class D: %d\n", ret);
 	}
 
+	aic3x->mclk = devm_clk_get(dev, "mclk");
+	if (IS_ERR(aic3x->mclk)) {
+            aic3x->mclk = NULL;
+            dev_err(dev, "mclk missing or invalid\n");
+    }
+	else
+	{
+		ret = clk_prepare_enable(aic3x->mclk);
+		if (ret < 0) {
+			dev_err(dev, "Failed to enable mclk\n");
+		}
+	}
 	ret = devm_snd_soc_register_component(dev, &soc_component_dev_aic3x, &aic3x_dai, 1);
 	if (ret)
+	{
+		if(aic3x->mclk)
+			clk_disable_unprepare(aic3x->mclk);
 		return ret;
+	}
 
 	return 0;
 }
@@ -1844,6 +1862,8 @@ void aic3x_remove(struct device *dev)
 {
 	struct aic3x_priv *aic3x = dev_get_drvdata(dev);
 
+	if(aic3x->mclk)
+		clk_disable_unprepare(aic3x->mclk);
 	/* Leave the codec in reset state */
 	if (aic3x->gpio_reset && !aic3x->shared_reset)
 		gpiod_set_value(aic3x->gpio_reset, 1);

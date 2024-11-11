@@ -436,6 +436,8 @@ static int rtl8211f_config_init(struct phy_device *phydev)
 		return ret;
 	}
 
+	phy_modify_paged_changed(phydev, 0xd04, 0x10, 0x4f20,0x205b);
+
 	return genphy_soft_reset(phydev);
 }
 
