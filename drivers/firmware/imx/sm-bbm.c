@@ -12,6 +12,7 @@
 #include <linux/scmi_protocol.h>
 #include <linux/scmi_nxp_protocol.h>
 #include <linux/suspend.h>
+#include <linux/reboot.h>
 
 #define DEBOUNCE_TIME		30
 #define REPEAT_INTERVAL		60
@@ -238,6 +239,18 @@ static int scmi_imx_bbm_rtc_init(struct scmi_device *sdev)
 								NULL, &bbnsm->nb);
 }
 
+static int bbm_poweroff(struct sys_off_data *data)
+{
+	struct scmi_imx_bbm *bbnsm = data->cb_data;
+	struct scmi_protocol_handle *ph = bbnsm->ph;
+	u32 state = 0;
+
+	printk("iMX95: notify System Manager to power off\n");
+
+	bbnsm->ops->shutdown_set(ph, &state);
+	return NOTIFY_DONE;
+}
+
 static int scmi_imx_bbm_probe(struct scmi_device *sdev)
 {
 	const struct scmi_handle *handle = sdev->handle;
@@ -272,6 +285,12 @@ static int scmi_imx_bbm_probe(struct scmi_device *sdev)
 	ret = scmi_imx_bbm_pwrkey_init(sdev);
 	if (ret) {
 		dev_err(dev, "pwr init failed: %d\n", ret);
+		return ret;
+	}
+
+	ret = devm_register_power_off_handler(dev, bbm_poweroff, bbnsm);
+	if (ret) {
+		dev_err(dev, "poweroff register failed: %d\n", ret);
 		return ret;
 	}
 

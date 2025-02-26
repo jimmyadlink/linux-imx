@@ -1512,9 +1512,6 @@ static struct pci_driver enetc4_pf_driver = {
 	.probe = enetc4_pf_probe,
 	.remove = enetc4_pf_remove,
 	.driver.pm = &enetc4_pf_pm_ops,
-#ifdef CONFIG_PCI_IOV
-	.sriov_configure = enetc_sriov_configure,
-#endif
 };
 module_pci_driver(enetc4_pf_driver);
 

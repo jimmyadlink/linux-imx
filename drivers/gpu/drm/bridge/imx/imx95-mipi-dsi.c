@@ -384,7 +384,7 @@ static int imx95_dsi_select_input(struct imx95_dsi *dsi)
 		/* ldb channel1 */
 		port = IMX95_DSI_ENDPOINT_PL1 + PIXEL_LINK_STREAMS;
 		remote_ldb_ch1 = of_graph_get_remote_node(remote1, port, 1);
-		if (!remote_pi1 || remote_ldb_ch1) {
+		if (!remote_pi1) {
 			dev_err(dev, "No valid input endpoint found\n");
 			ret = -EINVAL;
 			goto out;
@@ -859,7 +859,7 @@ imx95_dsi_validate_mode(struct imx95_dsi *dsi, const struct drm_display_mode *mo
 		 * dsi->clk_pixel, we have to validate mode against
 		 * magic mode clock rates.
 		 */
-		if (mode->clock != 297000 && mode->clock != 148500 &&
+		if (mode->clock != 295000 && mode->clock != 154000 && mode->clock != 297000 && mode->clock != 148500 &&
 		    mode->clock != 74250)
 			return MODE_NOCLOCK;
 	}

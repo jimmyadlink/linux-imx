@@ -391,7 +391,7 @@ static int imx_fsb_s400_fuse_probe(struct platform_device *pdev)
 	return 0;
 }
 
-static const u8 imx95_pf_mac_offset_list[] = { 0, 3, 6 };
+static const u8 imx95_pf_mac_offset_list[] = { 0, 1, 2 };
 
 static const struct imx_fsb_s400_hw imx8ulp_fsb_s400_hw = {
 	.soc = IMX8ULP,
