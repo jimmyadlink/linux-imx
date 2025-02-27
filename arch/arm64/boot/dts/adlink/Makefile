@@ -1,3 +1,4 @@
+dtb-$(CONFIG_ARCH_MXC) += lec-imx95.dtb
 dtb-$(CONFIG_ARCH_MXC) += lec-imx95-g080uan02.dtb
 dtb-$(CONFIG_ARCH_MXC) += lec-imx95-g156hat02.dtb
 dtb-$(CONFIG_ARCH_MXC) += lec-imx95-lt9611.dtb
